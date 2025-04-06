@@ -8,9 +8,9 @@ Created on Sun Apr  6 14:15:17 2025
 import pickle
 import streamlit as slt
 from streamlit_option_menu import option_menu;
-diabetes=pickle.load(open("E:/task1_files/multiple_disease_prediction/trained_diabetes.model",'rb'))
-heart=pickle.load(open("E:/task1_files/multiple_disease_prediction/heart_disease.pkl",'rb'))
-parkinson=pickle.load(open("E:/task1_files/multiple_disease_prediction/parkinson_disease.pkl",'rb'))
+diabetes=pickle.load(open("trained_diabetes.model",'rb'))
+heart=pickle.load(open("heart_disease.pkl",'rb'))
+parkinson=pickle.load(open("parkinson_disease.pkl",'rb'))
 with slt.sidebar:
     
     selected=option_menu("MULTIPLE DISEASE PREDICTION",['DIABETES_PREDICTION','HEART_DISEASE_PREDICTION','PARKINSON_PREDICTION'],default_index=0 )
