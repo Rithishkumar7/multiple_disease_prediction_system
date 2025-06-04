@@ -1,4 +1,5 @@
 
+
 import streamlit as st
 import pickle
 from streamlit_option_menu import option_menu
@@ -7,6 +8,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime, timedelta
 import numpy as np
+
 st.set_page_config(
     page_title="Enhanced Disease Prediction System",
     page_icon="🏥",
@@ -14,53 +16,16 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-from sklearn.calibration import CalibratedClassifierCV
-# -------------------------------------------------------------------
-
 # Load models (update paths as needed)
 try:
+    # Assuming models are in the same directory as the script
     diabetes = pickle.load(open(r"E:\ML PROJECTS\multiple_disease_prediction\trained_diabetes.model", 'rb'))
     heart = pickle.load(open(r"E:\ML PROJECTS\multiple_disease_prediction\heart_disease.pkl", 'rb'))
-
-    # Load the base Parkinson's SVC model
-    base_parkinson_model = pickle.load(open(r"E:\ML PROJECTS\multiple_disease_prediction\parkinson_disease.pkl", 'rb'))
-
-    # Check if the model already supports predict_proba
-    if hasattr(base_parkinson_model, 'predict_proba'):
-        parkinson = base_parkinson_model
-    else:
-        # If not, calibrate it.
-        # IMPORTANT: You need to fit CalibratedClassifierCV with data!
-        # This example uses dummy data for demonstration. In a real app,
-        # you'd load your training data (or a separate calibration set) here.
-        
-        # This part is crucial: You need your actual Parkinson's training data (X_train, y_train) here
-        # If you don't have it, you can't use CalibratedClassifierCV reliably.
-        # For a quick test, you *might* use dummy data, but for production, use real training data.
-        
-        # Placeholder for actual training data
-        # X_train_parkinson = ...  (your features for Parkinson's training)
-        # y_train_parkinson = ...  (your labels for Parkinson's training)
-
-        # Example with dummy data (REPLACE WITH YOUR ACTUAL DATA)
-        import numpy as np
-        X_train_parkinson = np.random.rand(100, 22) # 100 samples, 22 features (adjust based on your actual data shape)
-        y_train_parkinson = np.random.randint(0, 2, 100) # 100 labels (0 or 1)
-
-        parkinson = CalibratedClassifierCV(base_parkinson_model, method='isotonic', cv=5)
-        parkinson.fit(X_train_parkinson, y_train_parkinson) # Fit the calibrator
-
+    parkinson = pickle.load(open(r"E:\ML PROJECTS\multiple_disease_prediction\parkinson_disease.pkl", 'rb'))
 except FileNotFoundError:
-    st.error("⚠️ Model files not found. Please ensure 'trained_diabetes.model', 'heart_disease.pkl', and 'parkinson_disease.pkl' are in the correct directory.")
-    st.stop()
-except OSError as e:
-    st.error(f"Error loading model files due to path issue: {e}")
-    st.stop()
-except Exception as e:
-    st.error(f"An unexpected error occurred while loading models: {e}")
+    st.error("⚠️ Model files not found. Please ensure 'trained_diabetes.model', 'heart_disease.pkl', and 'parkinson_disease.pkl' are in the same directory as the script.")
     st.stop()
 
-# ... rest of your Streamlit app code ...
 # Configure page
 
 
@@ -71,7 +36,7 @@ st.markdown("""
         font-size: 2.5rem;
         font-weight: bold;
         text-align: center;
-        color: #FF0000;
+        color: #1f77b4;
         margin-bottom: 2rem;
     }
     .risk-critical {
@@ -79,8 +44,6 @@ st.markdown("""
         border-left: 5px solid #f44336;
         padding: 1rem;
         margin: 1rem 0;
-        color: #FF0000;
-
         border-radius: 5px;
     }
     .risk-high {
@@ -88,8 +51,6 @@ st.markdown("""
         border-left: 5px solid #ff9800;
         padding: 1rem;
         margin: 1rem 0;
-        color: #FF0000;
-
         border-radius: 5px;
     }
     .risk-moderate {
@@ -97,8 +58,6 @@ st.markdown("""
         border-left: 5px solid #9c27b0;
         padding: 1rem;
         margin: 1rem 0;
-        color: #FF0000;
-
         border-radius: 5px;
     }
     .risk-low {
@@ -112,8 +71,6 @@ st.markdown("""
         background-color: #f0f2f6;
         padding: 1rem;
         border-radius: 10px;
-        color: #FF0000;
-
         margin: 1rem 0;
     }
 </style>
@@ -470,7 +427,7 @@ elif selected == "🍯 Diabetes":
             prediction = diabetes.predict([[pregnancies, glucose, blood_pressure, skin_thickness, 
                                             insulin, bmi, pedigree, age]])
             prediction_proba = diabetes.predict_proba([[pregnancies, glucose, blood_pressure, skin_thickness, 
-                                                        insulin, bmi, pedigree, age]])[0]
+                                                         insulin, bmi, pedigree, age]])[0]
             
             # Get severity assessment
             severity, icon, color = assess_diabetes_severity(pregnancies, glucose, blood_pressure, bmi, age, prediction_proba[1])
@@ -512,73 +469,70 @@ elif selected == "🍯 Diabetes":
             
         except Exception as e:
             st.error(f"Error in prediction: {str(e)}")
+
 # Heart Disease Prediction
 elif selected == "❤️ Heart Disease":
     st.markdown('<h1 class="main-header">❤️ Heart Disease Risk Assessment</h1>', unsafe_allow_html=True)
-
+    
     with st.form("heart_form"):
         col1, col2, col3 = st.columns(3)
-
+        
         with col1:
             age = st.number_input("Age", min_value=1, max_value=120, value=50)
             sex = st.selectbox("Sex", options=[0, 1], format_func=lambda x: "Female" if x == 0 else "Male")
-            cp = st.selectbox("Chest Pain Type", options=[0, 1, 2, 3],
+            cp = st.selectbox("Chest Pain Type", options=[0, 1, 2, 3], 
                                format_func=lambda x: ["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"][x])
             trestbps = st.number_input("Resting Blood Pressure (mmHg)", min_value=80, max_value=250, value=120)
             chol = st.number_input("Serum Cholesterol (mg/dL)", min_value=100, max_value=600, value=200)
-
+            
         with col2:
-            fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=[0, 1],
+            fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=[0, 1], 
                                format_func=lambda x: "No" if x == 0 else "Yes")
             restecg = st.selectbox("Resting ECG", options=[0, 1, 2],
                                    format_func=lambda x: ["Normal", "ST-T Wave Abnormality", "Left Ventricular Hypertrophy"][x])
             thalach = st.number_input("Maximum Heart Rate Achieved", min_value=60, max_value=220, value=150)
             exang = st.selectbox("Exercise Induced Angina", options=[0, 1],
                                  format_func=lambda x: "No" if x == 0 else "Yes")
-
+            
         with col3:
             oldpeak = st.number_input("ST depression induced by exercise", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
             slope = st.selectbox("Slope of peak exercise ST segment", options=[0, 1, 2],
                                  format_func=lambda x: ["Upsloping", "Flat", "Downsloping"][x])
             ca = st.selectbox("Number of major vessels colored by fluoroscopy", options=[0, 1, 2, 3])
-
-            # --- FIX APPLIED HERE ---
-            # Changed options to [0, 1, 2] to match list indices directly
-            thal = st.selectbox("Thalassemia", options=[0, 1, 2],
-                                 format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect"][x])
-            # ------------------------
-
+            thal = st.selectbox("Thalassemia", options=[3, 6, 7],
+                                 format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect"][x-3])
+        
         submitted = st.form_submit_button("🔍 Analyze Heart Disease Risk", use_container_width=True)
-
+    
     if submitted:
         try:
             # Make prediction
             prediction = heart.predict([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
             prediction_proba = heart.predict_proba([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])[0]
-
+            
             # Get severity assessment
             severity, icon, color = assess_heart_severity(age, cp, trestbps, chol, thalach, prediction_proba[1])
-
+            
             # Display results
             col1, col2 = st.columns([2, 1])
-
+            
             with col1:
                 display_severity_assessment(severity, icon, color, "Heart Disease")
-
+                
                 if prediction[0] == 1:
                     st.error(f"⚠️ **High Risk of Heart Disease Detected** (Confidence: {prediction_proba[1]:.1%})")
                 else:
                     st.success(f"✅ **Low Risk of Heart Disease** (Confidence: {prediction_proba[0]:.1%})")
-
+                
                 # Get and display recommendations
                 recommendations = get_heart_recommendations(severity, age, trestbps, chol)
                 display_recommendations(recommendations, "Heart Health Management Recommendations")
-
+                
             with col2:
                 # Risk gauge
                 risk_fig = create_risk_gauge(prediction_proba[1] * 100, "Heart Disease Risk %")
                 st.plotly_chart(risk_fig, use_container_width=True)
-
+                
                 # Risk factors breakdown
                 st.markdown("#### 📊 Risk Factors Analysis")
                 factors = []
@@ -588,13 +542,13 @@ elif selected == "❤️ Heart Disease":
                 if chol > 240: factors.append("High Cholesterol")
                 if thalach < 120: factors.append("Low Max HR")
                 if exang == 1: factors.append("Exercise Angina")
-
+                
                 for factor in factors:
                     st.warning(f"⚠️ {factor}")
-
+                    
                 if not factors:
                     st.success("✅ No major risk factors detected")
-
+                    
         except Exception as e:
             st.error(f"Error in prediction: {str(e)}")
 
@@ -854,31 +808,8 @@ with st.expander("🧮 Additional Health Calculators"):
             elif systolic < 130 and diastolic < 80:
                 st.info("Elevated: 120-129 systolic and less than 80 diastolic")
             elif (systolic >= 130 and systolic < 140) or (diastolic >= 80 and diastolic < 90):
-                st.warning("High Blood Pressure Stage 1: 130-139/80-89 mmHg")
+                st.warning("High Blood Pressure (Hypertension Stage 1): 130-139 systolic or 80-89 diastolic")
             elif systolic >= 140 or diastolic >= 90:
-                st.error("High Blood Pressure Stage 2: 140/90 mmHg or higher")
-            elif systolic > 180 or diastolic > 120:
-                st.error("🚨 HYPERTENSIVE CRISIS: Seek immediate medical attention!")
-
-# Disclaimer
-st.markdown("---")
-st.markdown("""
-### ⚠️ Medical Disclaimer
-
-**Important Notice:** This application is for educational and informational purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. 
-
-**Key Points:**
-- Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition
-- Never disregard professional medical advice or delay in seeking it because of something you have read or seen in this application
-- If you think you may have a medical emergency, call your doctor or emergency services immediately
-- This tool uses machine learning models that may not be 100% accurate
-- Results should be interpreted in conjunction with clinical examination and other diagnostic tests
-
-**Data Privacy:** Your health information is processed locally and is not stored or transmitted to external servers.
-""")
-
-# Version and credits
-st.markdown("---")
-st.markdown("""
-**Enhanced Disease Prediction System v2.0** | Developed with ❤️ for better health outcomes
-""", unsafe_allow_html=True)
+                st.error("High Blood Pressure (Hypertension Stage 2): 140 or higher systolic or 90 or higher diastolic")
+            else:
+                st.error("Hypertensive Crisis: Higher than 180 systolic and/or higher than 120 diastolic. Seek emergency medical attention.")
