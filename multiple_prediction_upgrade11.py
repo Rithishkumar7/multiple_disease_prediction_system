@@ -19,9 +19,9 @@ st.set_page_config(
 # Load models (update paths as needed)
 try:
     # Assuming models are in the same directory as the script
-    diabetes = pickle.load(open(r"E:\ML PROJECTS\multiple_disease_prediction\trained_diabetes.model", 'rb'))
-    heart = pickle.load(open(r"E:\ML PROJECTS\multiple_disease_prediction\heart_disease.pkl", 'rb'))
-    parkinson = pickle.load(open(r"E:\ML PROJECTS\multiple_disease_prediction\parkinson_disease.pkl", 'rb'))
+    diabetes = pickle.load(open("trained_diabetes.model", 'rb'))
+    heart = pickle.load(open("heart_disease.pkl", 'rb'))
+    parkinson = pickle.load(open("parkinson_disease.pkl", 'rb'))
 except FileNotFoundError:
     st.error("⚠️ Model files not found. Please ensure 'trained_diabetes.model', 'heart_disease.pkl', and 'parkinson_disease.pkl' are in the same directory as the script.")
     st.stop()
