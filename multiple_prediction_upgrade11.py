@@ -499,7 +499,7 @@ elif selected == "❤️ Heart Disease":
             slope = st.selectbox("Slope of peak exercise ST segment", options=[0, 1, 2],
                                  format_func=lambda x: ["Upsloping", "Flat", "Downsloping"][x])
             ca = st.selectbox("Number of major vessels colored by fluoroscopy", options=[0, 1, 2, 3])
-                       thal_map = {
+            thal_map = {
             3: "Normal",
             6: "Fixed Defect",
             7: "Reversible Defect"
@@ -822,4 +822,5 @@ with st.expander("🧮 Additional Health Calculators"):
                 st.error("High Blood Pressure (Hypertension Stage 2): 140 or higher systolic or 90 or higher diastolic")
             else:
                 st.error("Hypertensive Crisis: Higher than 180 systolic and/or higher than 120 diastolic. Seek emergency medical attention.")
+
 
