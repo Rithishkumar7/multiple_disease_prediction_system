@@ -27,14 +27,13 @@ except FileNotFoundError:
 # Configure page
 
 
-# Custom CSS for better styling
 st.markdown("""
 <style>
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
         text-align: center;
-        color: #1f77b4;
+        color: #000000;
         margin-bottom: 2rem;
     }
     .risk-critical {
@@ -43,6 +42,7 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
     }
     .risk-high {
         background-color: #fff3e0;
@@ -50,6 +50,8 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
+
     }
     .risk-moderate {
         background-color: #f3e5f5;
@@ -57,6 +59,8 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
+
     }
     .risk-low {
         background-color: #e8f5e8;
@@ -64,6 +68,8 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
+
     }
     .recommendation-box {
         background-color: #f0f2f6;
@@ -83,6 +89,8 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+# ...existing code...
+
 
 # Severity Assessment Functions
 def assess_diabetes_severity(pregnancies, glucose, bp, bmi, age, prediction_prob):
@@ -358,7 +366,7 @@ with st.sidebar:
         ['🩺 Dashboard', '🍯 Diabetes', '❤️ Heart Disease', '🧠 Parkinson\'s'],
         default_index=0,
         styles={
-            "container": {"padding": "0!important", "background-color": "#FFEB3B"},
+            "container": {"padding": "0!important", "background-color": "#FFEB3B", "color": "black"},
             "icon": {"color": "black", "font-size": "25px"},
             "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee", "color": "black"},
             "nav-link-selected": {"background-color": "#02ab21", "color": "black"},
@@ -855,5 +863,11 @@ with st.expander("🧮 Additional Health Calculators"):
                 st.error("High Blood Pressure (Hypertension Stage 2): 140 or higher systolic or 90 or higher diastolic")
             else:
                 st.error("Hypertensive Crisis: Higher than 180 systolic and/or higher than 120 diastolic. Seek emergency medical attention.")
+
+
+
+
+
+
 
 
