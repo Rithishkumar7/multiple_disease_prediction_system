@@ -44,6 +44,7 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
     }
     .risk-high {
         background-color: #fff3e0;
@@ -51,6 +52,8 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
+
     }
     .risk-moderate {
         background-color: #f3e5f5;
@@ -58,6 +61,8 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
+
     }
     .risk-low {
         background-color: #e8f5e8;
@@ -65,6 +70,8 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
         border-radius: 5px;
+        color: #000000;
+
     }
     .recommendation-box {
         background-color: #f0f2f6;
@@ -833,6 +840,7 @@ with st.expander("🧮 Additional Health Calculators"):
                 st.error("High Blood Pressure (Hypertension Stage 2): 140 or higher systolic or 90 or higher diastolic")
             else:
                 st.error("Hypertensive Crisis: Higher than 180 systolic and/or higher than 120 diastolic. Seek emergency medical attention.")
+
 
 
 
