@@ -29,7 +29,7 @@ except FileNotFoundError:
 # Configure page
 
 
-# Custom CSS for better styling
+// ...existing code...
 st.markdown("""
 <style>
     .main-header {
@@ -73,8 +73,33 @@ st.markdown("""
         border-radius: 10px;
         margin: 1rem 0;
     }
+
+    /* Sidebar specific styling: yellow background and black text for titles/markdown */
+    div[data-testid="stSidebar"] {
+        background-color: #FFEB3B !important; /* yellow */
+    }
+    div[data-testid="stSidebar"] .markdown-text-container h2,
+    div[data-testid="stSidebar"] .markdown-text-container h1,
+    div[data-testid="stSidebar"] .markdown-text-container p {
+        color: #000000 !important; /* black text for sidebar titles and content */
+    }
 </style>
 """, unsafe_allow_html=True)
+# ...existing code...
+with st.sidebar:
+    st.markdown("## 🏥 Navigation")
+    selected = option_menu(
+        "Multiple Disease Prediction",
+        ['🩺 Dashboard', '🍯 Diabetes', '❤️ Heart Disease', '🧠 Parkinson\'s'],
+        default_index=0,
+        styles={
+            "container": {"padding": "0!important", "background-color": "#FFEB3B"},
+            "icon": {"color": "black", "font-size": "25px"},
+            "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee", "color": "black"},
+            "nav-link-selected": {"background-color": "#02ab21", "color": "black"},
+        }
+    )
+# ...existing code...
 
 # Severity Assessment Functions
 def assess_diabetes_severity(pregnancies, glucose, bp, bmi, age, prediction_prob):
@@ -822,5 +847,6 @@ with st.expander("🧮 Additional Health Calculators"):
                 st.error("High Blood Pressure (Hypertension Stage 2): 140 or higher systolic or 90 or higher diastolic")
             else:
                 st.error("Hypertensive Crisis: Higher than 180 systolic and/or higher than 120 diastolic. Seek emergency medical attention.")
+
 
 
