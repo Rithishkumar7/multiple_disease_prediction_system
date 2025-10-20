@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import pickle
 from streamlit_option_menu import option_menu
@@ -72,6 +70,16 @@ st.markdown("""
         padding: 1rem;
         border-radius: 10px;
         margin: 1rem 0;
+    }
+
+    /* Sidebar specific styling: yellow background and black text for titles/markdown */
+    div[data-testid="stSidebar"] {
+        background-color: #FFEB3B !important; /* yellow */
+    }
+    div[data-testid="stSidebar"] .markdown-text-container h2,
+    div[data-testid="stSidebar"] .markdown-text-container h1,
+    div[data-testid="stSidebar"] .markdown-text-container p {
+        color: #000000 !important; /* black text for sidebar titles and content */
     }
 </style>
 """, unsafe_allow_html=True)
@@ -351,10 +359,10 @@ with st.sidebar:
         ['🩺 Dashboard', '🍯 Diabetes', '❤️ Heart Disease', '🧠 Parkinson\'s'],
         default_index=0,
         styles={
-            "container": {"padding": "0!important", "background-color": "#fafafa"},
-            "icon": {"color": "orange", "font-size": "25px"},
-            "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
-            "nav-link-selected": {"background-color": "#02ab21"},
+            "container": {"padding": "0!important", "background-color": "#FFEB3B"},
+            "icon": {"color": "black", "font-size": "25px"},
+            "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee", "color": "black"},
+            "nav-link-selected": {"background-color": "#02ab21", "color": "black"},
         }
     )
 
