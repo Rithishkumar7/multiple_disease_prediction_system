@@ -703,22 +703,22 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("""
     **🚑 Emergency Services**
-    - Emergency: 911
-    - Poison Control: 1-800-222-1222
+    - Emergency: 108
+    - Poison Control: 91-800-222-1222
     """)
 
 with col2:
     st.markdown("""
     **🏥 Health Resources**
     - CDC: 1-800-CDC-INFO
-    - Health Info: 1-800-336-4797
+    - Health Info: 91-800-336-4797
     """)
 
 with col3:
     st.markdown("""
     **💊 Medication Support**
-    - Drug Info: 1-800-FDA-1088
-    - Pharmacy Help: 1-800-MEDICARE
+    - Drug Info: +91-80000941088
+    - Pharmacy Help: 91-800-MEDICARE
     """)
 
 # Health Tips and Educational Content
@@ -863,6 +863,7 @@ with st.expander("🧮 Additional Health Calculators"):
                 st.error("High Blood Pressure (Hypertension Stage 2): 140 or higher systolic or 90 or higher diastolic")
             else:
                 st.error("Hypertensive Crisis: Higher than 180 systolic and/or higher than 120 diastolic. Seek emergency medical attention.")
+
 
 
 
