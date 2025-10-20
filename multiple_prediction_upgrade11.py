@@ -35,7 +35,7 @@ st.markdown("""
         font-size: 2.5rem;
         font-weight: bold;
         text-align: center;
-        color: #1f77b4;
+        color: #000000;
         margin-bottom: 2rem;
     }
     .risk-critical {
@@ -833,6 +833,7 @@ with st.expander("🧮 Additional Health Calculators"):
                 st.error("High Blood Pressure (Hypertension Stage 2): 140 or higher systolic or 90 or higher diastolic")
             else:
                 st.error("Hypertensive Crisis: Higher than 180 systolic and/or higher than 120 diastolic. Seek emergency medical attention.")
+
 
 
 
