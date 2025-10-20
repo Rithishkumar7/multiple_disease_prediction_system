@@ -353,9 +353,8 @@ def create_risk_gauge(risk_percentage, title):
 
 # Sidebar navigation
 with st.sidebar:
-    st.markdown("## 🏥 Navigation")
     selected = option_menu(
-        "Multiple Disease Prediction",
+        "🏥 Navigation",
         ['🩺 Dashboard', '🍯 Diabetes', '❤️ Heart Disease', '🧠 Parkinson\'s'],
         default_index=0,
         styles={
