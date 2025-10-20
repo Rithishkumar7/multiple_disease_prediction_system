@@ -620,8 +620,34 @@ elif selected == "🧠 Parkinson's":
                 NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE
             ]
             
+            # Make prediction. Some classifiers (e.g. sklearn.svm.SVC) may not have
+            # predict_proba if they were not trained with probability=True. Handle
+            # that gracefully by falling back to decision_function (sigmoid) or
+            # to the raw predict result.
             prediction = parkinson.predict([input_data])
-            prediction_proba = parkinson.predict_proba([input_data])[0]
+
+            if hasattr(parkinson, "predict_proba"):
+                prediction_proba = parkinson.predict_proba([input_data])[0]
+            elif hasattr(parkinson, "decision_function"):
+                # decision_function may return a single value for binary classifiers
+                # or an array for multi-class. Convert to a probability-like score.
+                decision = parkinson.decision_function([input_data])
+                dec = np.atleast_1d(decision).ravel()
+                if dec.size == 1:
+                    # Map single decision value to probability with a sigmoid
+                    prob_pos = 1.0 / (1.0 + np.exp(-dec[0]))
+                    prediction_proba = np.array([1.0 - prob_pos, prob_pos])
+                else:
+                    # For multi-class, use softmax on the decision scores
+                    exps = np.exp(dec - np.max(dec))
+                    prediction_proba = exps / exps.sum()
+            else:
+                # Last resort: use predict output as 100% for the predicted class
+                pred_label = int(prediction[0])
+                if pred_label == 1:
+                    prediction_proba = np.array([0.0, 1.0])
+                else:
+                    prediction_proba = np.array([1.0, 0.0])
             
             # Get severity assessment
             severity, icon, color = assess_parkinson_severity(prediction_proba[1])
